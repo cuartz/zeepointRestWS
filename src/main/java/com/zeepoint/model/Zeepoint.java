@@ -1,5 +1,5 @@
 package com.zeepoint.model;
-// Generated May 21, 2015 1:31:25 AM by Hibernate Tools 4.3.1
+// Generated Jun 6, 2015 10:03:31 PM by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="zeepoint"
-//    ,catalog="zipoints"
+    ,catalog="zipoints"
     , uniqueConstraints = @UniqueConstraint(columnNames="reference_id") 
 )
 public class Zeepoint  implements java.io.Serializable {
@@ -32,7 +32,7 @@ public class Zeepoint  implements java.io.Serializable {
      private City city;
      private Country country;
      private State state;
-     private User user;
+     private Zipuser zipuser;
      private String name;
      private String referenceId;
      private BigDecimal longitud;
@@ -46,17 +46,18 @@ public class Zeepoint  implements java.io.Serializable {
     }
 
 	
-    public Zeepoint(String name, String referenceId, BigDecimal longitud, BigDecimal latitud) {
+    public Zeepoint(Zipuser zipuser, String name, String referenceId, BigDecimal longitud, BigDecimal latitud) {
+        this.zipuser = zipuser;
         this.name = name;
         this.referenceId = referenceId;
         this.longitud = longitud;
         this.latitud = latitud;
     }
-    public Zeepoint(City city, Country country, State state, User user, String name, String referenceId, BigDecimal longitud, BigDecimal latitud, Integer distance, String description, Set<Message> messages, Set<Room> rooms) {
+    public Zeepoint(City city, Country country, State state, Zipuser zipuser, String name, String referenceId, BigDecimal longitud, BigDecimal latitud, Integer distance, String description, Set<Message> messages, Set<Room> rooms) {
        this.city = city;
        this.country = country;
        this.state = state;
-       this.user = user;
+       this.zipuser = zipuser;
        this.name = name;
        this.referenceId = referenceId;
        this.longitud = longitud;
@@ -110,13 +111,13 @@ public class Zeepoint  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="creator")
-    public User getUser() {
-        return this.user;
+    @JoinColumn(name="creator", nullable=false)
+    public Zipuser getZipuser() {
+        return this.zipuser;
     }
     
-    public void setUser(User user) {
-        this.user = user;
+    public void setZipuser(Zipuser zipuser) {
+        this.zipuser = zipuser;
     }
 
     

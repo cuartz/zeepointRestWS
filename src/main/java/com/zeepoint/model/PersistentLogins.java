@@ -1,5 +1,5 @@
 package com.zeepoint.model;
-// Generated May 21, 2015 1:31:25 AM by Hibernate Tools 4.3.1
+// Generated Jun 6, 2015 10:03:31 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="persistent_logins"
-//    ,catalog="zipoints"
+    ,catalog="zipoints"
 )
 public class PersistentLogins  implements java.io.Serializable {
 

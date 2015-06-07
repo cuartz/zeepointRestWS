@@ -6,7 +6,6 @@
 package com.zeepoint.DAO;
 
 import com.zeepoint.model.Country;
-import com.zeepoint.model.User;
 import java.util.List;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;

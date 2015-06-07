@@ -6,7 +6,6 @@
 package com.zeepoint.service;
 
 import com.zeepoint.communication.UserOUT;
-import com.zeepoint.model.User;
 
 /**
  *

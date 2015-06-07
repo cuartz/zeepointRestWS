@@ -5,9 +5,7 @@
  */
 package com.zeepoint.DAO;
 
-import com.zeepoint.model.User;
-import com.zeepoint.model.Zeepoint;
-import java.math.BigDecimal;
+import com.zeepoint.model.Zipuser;
 import java.util.List;
 
 /**
@@ -15,8 +13,8 @@ import java.util.List;
  * @author cuartz
  */
 
-public interface UserDAO extends DAO<User, Long> {  
-        public List<User> findByFBID(Long fb_id);
+public interface ZipuserDAO extends DAO<Zipuser, Long> {  
+        public List<Zipuser> findByFBID(Long fb_id);
         
-        public List<User> getUsers(Long zeepointId);
+        public List<Zipuser> getUsers(Long zeepointId);
 }

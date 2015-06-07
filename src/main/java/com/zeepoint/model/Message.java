@@ -1,5 +1,5 @@
 package com.zeepoint.model;
-// Generated May 21, 2015 1:31:25 AM by Hibernate Tools 4.3.1
+// Generated Jun 6, 2015 10:03:31 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -20,25 +20,27 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="message"
-//    ,catalog="zipoints"
+    ,catalog="zipoints"
 )
 public class Message  implements java.io.Serializable {
 
 
      private Long id;
-     private User user;
      private Zeepoint zeepoint;
+     private Zipuser zipuser;
      private String message;
      private Date date;
+     private int delivered;
 
     public Message() {
     }
 
-    public Message(User user, Zeepoint zeepoint, String message, Date date) {
-       this.user = user;
+    public Message(Zeepoint zeepoint, Zipuser zipuser, String message, Date date, int delivered) {
        this.zeepoint = zeepoint;
+       this.zipuser = zipuser;
        this.message = message;
        this.date = date;
+       this.delivered = delivered;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -54,16 +56,6 @@ public class Message  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user", nullable=false)
-    public User getUser() {
-        return this.user;
-    }
-    
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="zeepoint", nullable=false)
     public Zeepoint getZeepoint() {
         return this.zeepoint;
@@ -71,6 +63,16 @@ public class Message  implements java.io.Serializable {
     
     public void setZeepoint(Zeepoint zeepoint) {
         this.zeepoint = zeepoint;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user", nullable=false)
+    public Zipuser getZipuser() {
+        return this.zipuser;
+    }
+    
+    public void setZipuser(Zipuser zipuser) {
+        this.zipuser = zipuser;
     }
 
     
@@ -91,6 +93,16 @@ public class Message  implements java.io.Serializable {
     
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    
+    @Column(name="delivered", nullable=false)
+    public int getDelivered() {
+        return this.delivered;
+    }
+    
+    public void setDelivered(int delivered) {
+        this.delivered = delivered;
     }
 
 

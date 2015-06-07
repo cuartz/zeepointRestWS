@@ -6,9 +6,6 @@
 package com.zeepoint.DAO;
 
 import com.zeepoint.model.Message;
-import com.zeepoint.model.User;
-import com.zeepoint.model.Zeepoint;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**

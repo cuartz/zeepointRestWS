@@ -5,9 +5,9 @@
  */
 package com.zeepoint.service;
 
-import com.zeepoint.DAO.UserDAO;
+import com.zeepoint.DAO.ZipuserDAO;
 import com.zeepoint.communication.UserOUT;
-import com.zeepoint.model.User;
+import com.zeepoint.model.Zipuser;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,15 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class UsersService implements IUsersService{
         @Autowired
-	private UserDAO usersDao;
+	private ZipuserDAO usersDao;
 	@Override
         @Transactional
 	public UserOUT createUser(Long fb_id, String deviceId){
 
-            List<User> users=usersDao.findByFBID(fb_id);
-            User user=null;
+            List<Zipuser> users=usersDao.findByFBID(fb_id);
+            Zipuser user=null;
             if (users.isEmpty()){
-                user=new User();
+                user=new Zipuser();
                 user.setFbId(fb_id);
                 user.setDeviceId(deviceId);
                 usersDao.makePersistent(user);
@@ -46,10 +46,10 @@ public class UsersService implements IUsersService{
     @Override
     @Transactional
     public UserOUT saveUser(String name, Long fb_id, String gender, String email) {
-            List<User> users=usersDao.findByFBID(fb_id);
-            User user=null;
+            List<Zipuser> users=usersDao.findByFBID(fb_id);
+            Zipuser user=null;
             if (users.isEmpty()){
-                user=new User();
+                user=new Zipuser();
                 user.setFbId(fb_id);
                 user.setGender(gender);
                 user.setName(name);

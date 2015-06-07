@@ -1,5 +1,5 @@
 package com.zeepoint.model;
-// Generated May 21, 2015 1:31:25 AM by Hibernate Tools 4.3.1
+// Generated Jun 6, 2015 10:03:31 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="city"
-//    ,catalog="zipoints"
+    ,catalog="zipoints"
 )
 public class City  implements java.io.Serializable {
 

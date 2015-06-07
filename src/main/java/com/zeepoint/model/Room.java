@@ -1,5 +1,5 @@
 package com.zeepoint.model;
-// Generated May 21, 2015 1:31:25 AM by Hibernate Tools 4.3.1
+// Generated Jun 6, 2015 10:03:31 PM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -18,24 +18,24 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="room"
-//    ,catalog="zipoints"
+    ,catalog="zipoints"
     , uniqueConstraints = @UniqueConstraint(columnNames="userid") 
 )
 public class Room  implements java.io.Serializable {
 
 
      private Long id;
-     private User user;
      private Zeepoint zeepoint;
-     private Integer status;
+     private Zipuser zipuser;
+     private int status;
 
     public Room() {
     }
 
-    public Room(User user, Zeepoint zeepoint, Integer status) {
-       this.user = user;
+    public Room(Zeepoint zeepoint, Zipuser zipuser, int status) {
        this.zeepoint = zeepoint;
-       this.status=status;
+       this.zipuser = zipuser;
+       this.status = status;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -51,16 +51,6 @@ public class Room  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="userid", unique=true, nullable=false)
-    public User getUser() {
-        return this.user;
-    }
-    
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="zeepointId", nullable=false)
     public Zeepoint getZeepoint() {
         return this.zeepoint;
@@ -70,18 +60,23 @@ public class Room  implements java.io.Serializable {
         this.zeepoint = zeepoint;
     }
 
-    /**
-     * @return the status
-     */
-     @Column(name="status", nullable=false)
-    public Integer getStatus() {
-        return status;
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="userid", unique=true, nullable=false)
+    public Zipuser getZipuser() {
+        return this.zipuser;
+    }
+    
+    public void setZipuser(Zipuser zipuser) {
+        this.zipuser = zipuser;
     }
 
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(Integer status) {
+    
+    @Column(name="status", nullable=false)
+    public int getStatus() {
+        return this.status;
+    }
+    
+    public void setStatus(int status) {
         this.status = status;
     }
 

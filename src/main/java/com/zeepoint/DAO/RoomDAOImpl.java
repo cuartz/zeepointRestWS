@@ -6,18 +6,9 @@
 package com.zeepoint.DAO;
 
 import com.zeepoint.model.Room;
-import com.zeepoint.model.User;
-import com.zeepoint.model.Zeepoint;
 import com.zeepoint.service.ZeePointGroupService;
-import java.math.BigDecimal;
-import java.util.List;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Component;
 
 /**

@@ -9,11 +9,11 @@ package com.zeepoint.jms;
 import com.zeepoint.communication.ZipointJoin;
 import com.zeepoint.communication.ZipointMessage;
 import com.zeepoint.DAO.MessageDAO;
-import com.zeepoint.DAO.UserDAO;
 import com.zeepoint.DAO.ZeepointDAO;
+import com.zeepoint.DAO.ZipuserDAO;
 import com.zeepoint.model.Message;
 import com.zeepoint.model.Room;
-import com.zeepoint.model.User;
+import com.zeepoint.model.Zipuser;
 import com.zeepoint.model.Zeepoint;
 import com.zeepoint.service.IosNotificationService;
 import java.util.List;
@@ -36,7 +36,7 @@ public class JMSService {
     IosNotificationService iosNotification;
     
         @Autowired
-    UserDAO userDao;
+    ZipuserDAO userDao;
         
                 @Autowired
     MessageDAO messageDao;
@@ -47,9 +47,9 @@ public class JMSService {
     @JmsListener(containerFactory = "myJmsContainerFactory", destination = "ios.notification.join")//@JmsListener(containerFactory = "myJmsContainerFactory", destination = "myQueue")
     public void processOrderJoinCHannel(ZipointJoin zpointJoin) {
         //String token = "f4ed6403 76267a64 34d04a99 65bcc762 cdd8418b 0e64705d 102c4709 55a869db";
-        User user = userDao.findById(zpointJoin.getUserId(), false);
+        Zipuser user = userDao.findById(zpointJoin.getUserId(), false);
         Zeepoint zPoint=zeepointDao.findById(zpointJoin.getChannel(), false);
-        User notificationUser=zPoint.getUser();
+        Zipuser notificationUser=zPoint.getZipuser();
         if (user!=notificationUser){
             iosNotification.sendNotification(user.getName()+" joined your point: "+zPoint.getName(), 1, notificationUser.getDeviceId());
         }
@@ -59,18 +59,47 @@ public class JMSService {
     public void processOrderGroupMessage(ZipointMessage message) {
         //String token = "f4ed6403 76267a64 34d04a99 65bcc762 cdd8418b 0e64705d 102c4709 55a869db";
         try{
-        User user = userDao.findById(message.getUserId(), false);
+        Zipuser user = userDao.findById(message.getUserId(), false);
         List<Zeepoint> zeePoints=zeepointDao.findByReference(message.getChannel());
         if (zeePoints!=null && !zeePoints.isEmpty()){
             Zeepoint zeePoint=zeePoints.get(0);
             Message ziPointMessage = new Message();
             ziPointMessage.setMessage(message.getMessage());
-            ziPointMessage.setUser(user);
+            ziPointMessage.setZipuser(user);
             ziPointMessage.setZeepoint(zeePoint);
             ziPointMessage.setDate(message.getTime());
             messageDao.makePersistent(ziPointMessage);
         for (Room room:zeePoint.getRooms()){
-            User notificationUser=room.getUser();
+            Zipuser notificationUser=room.getZipuser();
+            //user.setNotifications(user.getNotifications()+1)
+            //userDao.makePersistent(user);
+            if (user!=notificationUser){
+                iosNotification.sendNotification(user.getName()+" send a message to the point: "+zeePoint.getName(), 1, notificationUser.getDeviceId());
+            }
+        }
+        }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+        @Transactional
+    @JmsListener(containerFactory = "myJmsContainerFactory", destination = "ios.notification.groupmessage")//@JmsListener(containerFactory = "myJmsContainerFactory", destination = "myQueue")
+    public void processOrderPrivateMessage(ZipointMessage message) {
+        //String token = "f4ed6403 76267a64 34d04a99 65bcc762 cdd8418b 0e64705d 102c4709 55a869db";
+        try{
+        Zipuser user = userDao.findById(message.getUserId(), false);
+        List<Zeepoint> zeePoints=zeepointDao.findByReference(message.getChannel());
+        if (zeePoints!=null && !zeePoints.isEmpty()){
+            Zeepoint zeePoint=zeePoints.get(0);
+            Message ziPointMessage = new Message();
+            ziPointMessage.setMessage(message.getMessage());
+            ziPointMessage.setZipuser(user);
+            ziPointMessage.setZeepoint(zeePoint);
+            ziPointMessage.setDate(message.getTime());
+            messageDao.makePersistent(ziPointMessage);
+        for (Room room:zeePoint.getRooms()){
+            Zipuser notificationUser=room.getZipuser();
             //user.setNotifications(user.getNotifications()+1)
             //userDao.makePersistent(user);
             if (user!=notificationUser){
@@ -91,12 +120,12 @@ public class JMSService {
             
             Message groupMessage = new Message();
             groupMessage.setMessage(message.getMessage());
-        User user = userDao.findById(message.getUserId(), false);
+        Zipuser user = userDao.findById(message.getUserId(), false);
         List<Zeepoint> zeePoints=zeepointDao.findByReference(message.getChannel());
         if (zeePoints!=null && !zeePoints.isEmpty()){
             Zeepoint zeePoint=zeePoints.get(0);
         for (Room room:zeePoint.getRooms()){
-            User notificationUser=room.getUser();
+            Zipuser notificationUser=room.getZipuser();
             if (user!=notificationUser){
                 iosNotification.sendNotification(user.getName()+" send a message to your point: "+zeePoint.getName(), 1, notificationUser.getDeviceId());
             }

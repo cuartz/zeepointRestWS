@@ -6,8 +6,6 @@
 package com.zeepoint.DAO;
 
 import com.zeepoint.model.Room;
-import com.zeepoint.model.User;
-import java.util.List;
 
 /**
  *

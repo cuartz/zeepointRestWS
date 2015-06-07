@@ -2,7 +2,8 @@ package com.zeepoint.communication;
 // Generated Apr 12, 2015 2:37:02 AM by Hibernate Tools 4.3.1
 
 import com.util.EnviromentProperties;
-import com.zeepoint.model.User;
+import com.zeepoint.model.Zipuser;
+import org.springframework.security.core.userdetails.User;
 
 
 
@@ -16,6 +17,7 @@ public class UserOUT extends BaseOUT{
      private String email;
      private String gender;
      private String imageurl;
+     private String ziPointName;
      private final String host=EnviromentProperties.HOST;
 
     public UserOUT() {
@@ -31,7 +33,7 @@ public class UserOUT extends BaseOUT{
        this.imageurl = imageurl;
     }
     
-    public UserOUT(User user){
+    public UserOUT(Zipuser user){
        this.id=user.getId();
        this.fbId = user.getFbId();
        this.name = user.getName();
@@ -102,6 +104,20 @@ public class UserOUT extends BaseOUT{
      */
     public String getHost() {
         return host;
+    }
+
+    /**
+     * @return the ziPointName
+     */
+    public String getZiPointName() {
+        return ziPointName;
+    }
+
+    /**
+     * @param ziPointName the ziPointName to set
+     */
+    public void setZiPointName(String ziPointName) {
+        this.ziPointName = ziPointName;
     }
 }
 

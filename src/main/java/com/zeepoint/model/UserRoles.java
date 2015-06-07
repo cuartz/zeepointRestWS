@@ -1,5 +1,5 @@
 package com.zeepoint.model;
-// Generated May 21, 2015 1:31:25 AM by Hibernate Tools 4.3.1
+// Generated Jun 6, 2015 10:03:31 PM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -18,21 +18,21 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="user_roles"
-//    ,catalog="zipoints"
+    ,catalog="zipoints"
     , uniqueConstraints = @UniqueConstraint(columnNames={"ROLE", "user_id"}) 
 )
 public class UserRoles  implements java.io.Serializable {
 
 
      private Integer userRoleId;
-     private User user;
+     private Zipuser zipuser;
      private String role;
 
     public UserRoles() {
     }
 
-    public UserRoles(User user, String role) {
-       this.user = user;
+    public UserRoles(Zipuser zipuser, String role) {
+       this.zipuser = zipuser;
        this.role = role;
     }
    
@@ -50,12 +50,12 @@ public class UserRoles  implements java.io.Serializable {
 
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
-    public User getUser() {
-        return this.user;
+    public Zipuser getZipuser() {
+        return this.zipuser;
     }
     
-    public void setUser(User user) {
-        this.user = user;
+    public void setZipuser(Zipuser zipuser) {
+        this.zipuser = zipuser;
     }
 
     

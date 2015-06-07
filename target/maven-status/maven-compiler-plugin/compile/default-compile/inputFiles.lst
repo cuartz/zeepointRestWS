@@ -6,10 +6,13 @@
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/config/SecurityConfig.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/web/TodoController.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/IUsersService.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Pmessage.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/CityDAOImpl.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/mobile/ws/ZeePointGroupMobileController.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/web/ws/WebAppRestController.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/PmessageDAOImpl.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/ws/Sign.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/ZipuserDAOImpl.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/communication/BaseOUT.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/RoomDAO.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/IosNotificationService.java
@@ -18,9 +21,11 @@
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/DAO.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/util/Reversed.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/Reciever.java
-/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/UserDAO.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/PmessageDAO.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/communication/UsersOUT.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/communication/ZeepointOUT.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/config/MobileSecurityConfig.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/ZipuserDAO.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Zeepoint.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/AsyncService.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Message.java
@@ -31,6 +36,7 @@
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/City.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/JmsMessageSender.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/MessagesRecorder.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/ContactDAOImpl.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/web/ws/usersController.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/web/MainController.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/controller/mobile/ws/MobileAppRestController.java
@@ -48,6 +54,7 @@
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/config/HibernateAppConfig.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/IZeePointGroupService.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/config/AppConfig.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/ContactDAO.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/MessageDAO.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/ZeepointDAO.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/JmsReceiver.java
@@ -63,9 +70,10 @@
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/DAOImpl.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/State.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/hibernate/config/HibernateConfiguration.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Contact.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/communication/OutputMessage.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/communication/ZipointJoin.java
-/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/DAO/UserDAOImpl.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Zipuser.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Room.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/config/RabbitMQConfig.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/util/ZipointsBLException.java
@@ -74,8 +82,8 @@
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/jms/JMSService.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/UserRoles.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/service/CustomTokenBasedRememberMeService.java
-/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/User.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/util/ApplicationUser.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/config/SecurityWebApplicationInitializer.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Country.java
+/Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/model/Proom.java
 /Users/cuartz/NetBeansProjects/zeepointRestWS/src/main/java/com/zeepoint/web/websocket/ChatController.java

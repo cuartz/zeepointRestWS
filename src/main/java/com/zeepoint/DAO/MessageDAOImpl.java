@@ -6,13 +6,8 @@
 package com.zeepoint.DAO;
 
 import com.zeepoint.model.Message;
-import com.zeepoint.model.Room;
-import com.zeepoint.model.User;
-import com.zeepoint.service.ZeePointGroupService;
 import java.util.List;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 

@@ -8,29 +8,31 @@ package com.zeepoint.service;
 import static com.util.Reversed.reversed;
 import com.util.ZipointsBLException;
 import com.zeepoint.DAO.CityDAO;
+import com.zeepoint.DAO.ContactDAO;
 import com.zeepoint.DAO.CountryDAO;
 import com.zeepoint.communication.ZipointMessage;
 import com.zeepoint.DAO.MessageDAO;
+import com.zeepoint.DAO.PmessageDAO;
 import com.zeepoint.DAO.RoomDAO;
 import com.zeepoint.DAO.StateDAO;
-import com.zeepoint.DAO.UserDAO;
 import com.zeepoint.DAO.ZeepointDAO;
+import com.zeepoint.DAO.ZipuserDAO;
 import com.zeepoint.communication.UserOUT;
 import com.zeepoint.communication.ZeepointJoinedOUT;
 import com.zeepoint.communication.ZeepointOUT;
 import com.zeepoint.communication.ZipointMessagesOUT;
 import com.zeepoint.model.City;
+import com.zeepoint.model.Contact;
 import com.zeepoint.model.Country;
 import com.zeepoint.model.Message;
+import com.zeepoint.model.Pmessage;
 import com.zeepoint.model.Room;
 import com.zeepoint.model.State;
-import com.zeepoint.model.User;
 import com.zeepoint.model.Zeepoint;
+import com.zeepoint.model.Zipuser;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -48,6 +50,8 @@ public class ZeePointGroupService implements IZeePointGroupService {
 
     public static final Integer USER_STATUS = 1;
     public static final Integer LISTENER_STATUS = 2;
+    public static final Integer GROUP_MESSAGE = 0;
+        public static final Integer PRIVATE_MESSAGE = 1;
     private static final Matcher matcher = Pattern.compile(
             "^\\("
             //Latitude
@@ -61,7 +65,9 @@ public class ZeePointGroupService implements IZeePointGroupService {
     @Autowired
     private ZeepointDAO zeepointDao;
     @Autowired
-    private UserDAO userDao;
+    private ZipuserDAO userDao;
+        @Autowired
+    private ContactDAO contactDao;
     @Autowired
     private RoomDAO roomDao;
     @Autowired
@@ -72,6 +78,8 @@ public class ZeePointGroupService implements IZeePointGroupService {
     private CityDAO cityDao;
     @Autowired
     private MessageDAO messageDao;
+        @Autowired
+    private PmessageDAO pMessageDao;
 
     /**
      *
@@ -142,9 +150,9 @@ public class ZeePointGroupService implements IZeePointGroupService {
         zeepoint.setCity(city);
         zeepoint.setCountry(country);
         zeepoint.setState(state);
-        List<User> users = userDao.findByFBID(fb_id);
+        List<Zipuser> users = userDao.findByFBID(fb_id);
         if (!users.isEmpty()) {
-            zeepoint.setUser(users.get(0));
+            zeepoint.setZipuser(users.get(0));
         }
         Random ran = new Random();
         int random = ran.nextInt();
@@ -173,7 +181,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
         //Long joinedZpoint = null;
         if (userId != null) {
             Room room = null;
-            User user = userDao.findById(userId, false);
+            Zipuser user = userDao.findById(userId, false);
             if (!user.getRooms().isEmpty()) {
                 room = user.getRooms().iterator().next();
             }
@@ -232,21 +240,51 @@ public class ZeePointGroupService implements IZeePointGroupService {
         }
         return zpsOUT;
     }
+    
+        @Override
+    @Transactional
+    public List<ZeepointOUT> getFavoriteZpoints(Long userId) {
+        List<ZeepointOUT> zpsOUT = new ArrayList<>();
+
+        Zipuser user=userDao.findById(userId, true);
+        for (Zeepoint zp : user.getZeepoints()) {
+            ZeepointOUT zpOUT = new ZeepointOUT();
+            zpOUT.setId(zp.getId());
+            if (zp.getDistance() == null) {
+                zp.setDistance(0);
+                //System.err.println("Unreacheable point :" + zp.getId() + " from lat,lon:" + lat + "," + lon);
+            }
+            //           else {
+//                if (zp.getId().equals(joinedZpoint)) {
+//                    zpOUT.setJoined(true);
+//                }
+            zpOUT.setDistance(zp.getDistance());
+            zpOUT.setLatitud(zp.getLatitud());
+            zpOUT.setLongitud(zp.getLongitud());
+            zpOUT.setName(zp.getName());
+            zpOUT.setReferenceId(zp.getReferenceId());
+            zpOUT.setUsers(roomDao.countUsers(zp.getId()).intValue());//zp.getRooms().size());
+            zpOUT.setListeners(roomDao.countListeners(zp.getId()).intValue());
+            zpsOUT.add(zpOUT);
+//            }
+        }
+        return zpsOUT;
+    }
 
     @Override
     @Transactional
     public ZeepointJoinedOUT joinZpoint(Long id, Long userId, BigDecimal lat, BigDecimal lon) {
 
         Zeepoint zpoint = zeepointDao.findById(id, false);
-        User user = userDao.findById(userId, false);
+        Zipuser user = userDao.findById(userId, false);
         Room room = null;
         if (!user.getRooms().isEmpty()) {
             room = user.getRooms().iterator().next();
         } else {
             room = new Room();
-            room.setUser(user);
+            room.setZipuser(user);
         }
-        if (isInRange(zpoint, lat, lon)) {
+        if (isInRange(zpoint, lat, lon) || user==zpoint.getZipuser()) {
             room.setStatus(USER_STATUS);
         } else {
             room.setStatus(LISTENER_STATUS);
@@ -278,9 +316,9 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zPMessage.setMessageId(zMessage.getId());
             zPMessage.setMessage(zMessage.getMessage());
             zPMessage.setTime(zMessage.getDate());
-            zPMessage.setUserId(zMessage.getUser().getId());
-            zPMessage.setFbId(zMessage.getUser().getFbId());
-            zPMessage.setUserName(zMessage.getUser().getName());
+            zPMessage.setUserId(zMessage.getZipuser().getId());
+            zPMessage.setFbId(zMessage.getZipuser().getFbId());
+            zPMessage.setUserName(zMessage.getZipuser().getName());
             zPMessages.add(zPMessage);
         }
         zpJOUT.setzMessages(zPMessages);
@@ -347,9 +385,31 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zPMessage.setMessageId(zMessage.getId());
             zPMessage.setMessage(zMessage.getMessage());
             zPMessage.setTime(zMessage.getDate());
-            zPMessage.setUserId(zMessage.getUser().getId());
-            zPMessage.setFbId(zMessage.getUser().getFbId());
-            zPMessage.setUserName(zMessage.getUser().getName());
+            zPMessage.setUserId(zMessage.getZipuser().getId());
+            zPMessage.setFbId(zMessage.getZipuser().getFbId());
+            zPMessage.setUserName(zMessage.getZipuser().getName());
+            zPMessages.add(zPMessage);
+        }
+        zpMessagesOut.setzMessages(zPMessages);
+        return zpMessagesOut;
+    }
+    
+        @Override
+    @Transactional
+    public ZipointMessagesOUT getPreviousPrivateMessages(Long fromId, Long toId, Long lastMessageId) {
+        ZipointMessagesOUT zpMessagesOut = new ZipointMessagesOUT();
+        Zipuser user = userDao.findById(toId, false);
+        List<Pmessage> pMessages = pMessageDao.getPreviousMessages(fromId, toId, lastMessageId);
+        List<ZipointMessage> zPMessages = new ArrayList<>();
+        for (Pmessage pMessage : pMessages) {
+            ZipointMessage zPMessage = new ZipointMessage();
+            //zPMessage.setChannel(zpoint.getReferenceId());
+            zPMessage.setMessageId(pMessage.getId());
+            zPMessage.setMessage(pMessage.getMessage());
+            zPMessage.setTime(pMessage.getDate());
+            zPMessage.setUserId(user.getId());
+            zPMessage.setFbId(user.getFbId());
+            zPMessage.setUserName(user.getName());
             zPMessages.add(zPMessage);
         }
         zpMessagesOut.setzMessages(zPMessages);
@@ -360,8 +420,8 @@ public class ZeePointGroupService implements IZeePointGroupService {
     @Transactional
     public List<UserOUT> getUsers(Long ziPointId) {
         List<UserOUT> usersOUT = new ArrayList<>();
-        List<User> users = userDao.getUsers(ziPointId);
-        for (User user : users) {
+        List<Zipuser> users = userDao.getUsers(ziPointId);
+        for (Zipuser user : users) {
             UserOUT userOUT = new UserOUT();
             userOUT.setAge(user.getAge());
             userOUT.setEmail(user.getEmail());
@@ -389,6 +449,69 @@ public class ZeePointGroupService implements IZeePointGroupService {
 //            zPMessages.add(zPMessage);
 //        }
 //        zpMessagesOut.setzMessages(zPMessages);
+        return usersOUT;
+    }
+    
+    
+    @Override
+    @Transactional
+    public List<UserOUT> getContacts(Long userId) {
+        List<UserOUT> usersOUT = new ArrayList<>();
+        Zipuser self = userDao.findById(userId, true);
+        for (Contact contact : self.getContactsForUser()) {
+            UserOUT userOUT = new UserOUT();
+            Zipuser user=contact.getZipuserByContactId();
+            userOUT.setAge(user.getAge());
+            userOUT.setEmail(user.getEmail());
+            userOUT.setFbId(user.getFbId());
+            userOUT.setGender(user.getGender());
+            userOUT.setId(user.getId());
+            userOUT.setName(user.getName());
+            for (Room room:user.getRooms()){
+                userOUT.setZiPointName(room.getZeepoint().getName());
+            }
+            usersOUT.add(userOUT);
+        }
+        return usersOUT;
+    }
+    
+    @Override
+    @Transactional
+    public List<UserOUT> addContact(Long userId, Long contactId) {
+        List<UserOUT> usersOUT = new ArrayList<>();
+        Zipuser self = userDao.findById(userId, true);
+        Zipuser contactUser = userDao.findById(userId, true);
+        
+        
+        Contact newContact = new Contact();
+        newContact.setZipuserByUser(self);
+        newContact.setZipuserByContactId(contactUser);
+        contactDao.makePersistent(newContact);
+        for (Contact contact : self.getContactsForUser()) {
+            UserOUT userOUT = new UserOUT();
+            Zipuser user=contact.getZipuserByContactId();
+            userOUT.setAge(user.getAge());
+            userOUT.setEmail(user.getEmail());
+            userOUT.setFbId(user.getFbId());
+            userOUT.setGender(user.getGender());
+            userOUT.setId(user.getId());
+            userOUT.setName(user.getName());
+            for (Room room:user.getRooms()){
+                userOUT.setZiPointName(room.getZeepoint().getName());
+            }
+            usersOUT.add(userOUT);
+        }
+        return usersOUT;
+    }
+    
+        @Override
+    @Transactional
+    public List<UserOUT> removeContact(Long userId, Long contactId) {
+        List<UserOUT> usersOUT = new ArrayList<>();
+        Contact contact = contactDao.findContact(userId, contactId);
+        
+        contactDao.makeTransient(contact);
+        
         return usersOUT;
     }
 

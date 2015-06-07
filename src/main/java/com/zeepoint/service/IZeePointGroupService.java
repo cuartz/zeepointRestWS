@@ -28,4 +28,14 @@ public interface IZeePointGroupService {
     public ZipointMessagesOUT getPreviousMessages(Long id, Long lastMessageId);
     
     public List<UserOUT> getUsers(Long ziPointId);
+    
+    public ZipointMessagesOUT getPreviousPrivateMessages(Long fromId, Long toId, Long lastMessageId);
+    
+    public List<UserOUT> getContacts(Long userId);
+    
+        public List<UserOUT> removeContact(Long userId, Long contactId);
+        
+          public List<UserOUT> addContact(Long userId, Long contactId);
+          
+              public List<ZeepointOUT> getFavoriteZpoints(Long userId);
 }

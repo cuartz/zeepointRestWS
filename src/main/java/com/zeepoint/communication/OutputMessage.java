@@ -14,12 +14,14 @@ import java.util.Date;
  */
 public class OutputMessage implements Serializable{
     
-      private String message;
+  private String message;
   private Long id;
   private String channel;
   private Long userId;
       private String userName;
     private Long fbId;
+    
+    private Integer messageType;
   
   public OutputMessage() {
     
@@ -101,5 +103,19 @@ public class OutputMessage implements Serializable{
      */
     public void setFbId(Long fbId) {
         this.fbId = fbId;
+    }
+
+    /**
+     * @return the messageType
+     */
+    public Integer getMessageType() {
+        return messageType;
+    }
+
+    /**
+     * @param messageType the messageType to set
+     */
+    public void setMessageType(Integer messageType) {
+        this.messageType = messageType;
     }
 }

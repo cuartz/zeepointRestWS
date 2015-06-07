@@ -7,6 +7,7 @@ package com.zeepoint.web.websocket;
 
 import com.zeepoint.communication.OutputMessage;
 import com.zeepoint.communication.ZipointMessage;
+import com.zeepoint.service.ZeePointGroupService;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,14 @@ public class ChatController {
     public void sendMessage(OutputMessage message) {
         //jmsTemplate.convertAndSend("iios.notification.groupmessage", message);
         ZipointMessage zMessage=new ZipointMessage(message, new Date());
-        messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);//+message.getChannel()
-        jmsTemplate.convertAndSend("ios.notification.groupmessage", zMessage);
+//+message.getChannel()
+        if (message.getMessageType()==ZeePointGroupService.PRIVATE_MESSAGE){
+            messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
+            jmsTemplate.convertAndSend("ios.notification.privatemessage", zMessage);
+        }else{
+             messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
+            jmsTemplate.convertAndSend("ios.notification.groupmessage", zMessage);
+        }
         //return new OutputMessage(message, new Date());
     }
 

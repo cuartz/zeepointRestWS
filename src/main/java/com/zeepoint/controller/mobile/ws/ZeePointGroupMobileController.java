@@ -5,6 +5,8 @@ import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.PayloadBuilder;
 import com.util.ZipointsBLException;
+import com.zeepoint.communication.UserOUT;
+import com.zeepoint.communication.UsersOUT;
 import com.zeepoint.communication.ZipointJoin;
 import com.zeepoint.communication.ZeepointJoinedOUT;
 import com.zeepoint.communication.ZeepointOUT;
@@ -96,6 +98,25 @@ public class ZeePointGroupMobileController extends MobileAppRestController {
 
         return zpsOUT;
     }
+    
+        @RequestMapping("/zeepointgroups/getfavoritezpoints")
+    public ZeepointsOUT getFavoriteZpoints(
+            @RequestParam(value = "user_id", required = true) Long userId) {
+        List<ZeepointOUT> zps = zpointService.getFavoriteZpoints(userId);
+        ZeepointsOUT zpsOUT = new ZeepointsOUT();
+        zpsOUT.setZeePointsOut(zps);
+
+        try {
+            //jmsTemplate.convertAndSend("ios.notification.join", "mensaje");//"mailbox-destination", "mensaje");
+
+//                Push.alert("Hello World!", "keystore.p12", "wasa0901852592C", false, "Your token");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ZeePointGroupMobileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return zpsOUT;
+    }
 
     @RequestMapping("/zeepointgroups/join")
     public ZeepointJoinedOUT joinZpoint(
@@ -135,5 +156,51 @@ public class ZeePointGroupMobileController extends MobileAppRestController {
 //        ZeepointsOUT zpsOUT = new ZeepointsOUT();
 //        zpsOUT.setZeePointsOut(zps);
         return previousMessages;
+    }
+    
+                @RequestMapping("/zeepointgroups/getpmessages")
+    public ZipointMessagesOUT getPmessages(
+            @RequestParam(value = "fromId", required = true) Long fromId,
+            @RequestParam(value = "tpId", required = true) Long toId,
+            @RequestParam(value = "last_message", required = true) Long messageId) {
+        ZipointMessagesOUT previousMessages = zpointService.getPreviousPrivateMessages(fromId, toId, messageId);
+//        List<ZeepointOUT> zps = zpointService.getAllZpoints(lat, lon, userId, 1,30);
+//        ZeepointsOUT zpsOUT = new ZeepointsOUT();
+//        zpsOUT.setZeePointsOut(zps);
+        return previousMessages;
+    }
+    
+                @RequestMapping("/zeepointgroups/getusers")
+    public UsersOUT getUsers(
+            @RequestParam(value = "id", required = true) Long id) {
+        UsersOUT users = new UsersOUT();
+        users.setUsers(zpointService.getUsers(id));
+        return users;
+    }
+    
+    @RequestMapping("/zeepointgroups/getcontacts")
+    public UsersOUT getContacts(
+            @RequestParam(value = "id", required = true) Long id) {
+        UsersOUT users = new UsersOUT();
+        users.setUsers(zpointService.getContacts(id));
+        return users;
+    }
+    
+    @RequestMapping("/zeepointgroups/addcontacts")
+    public UsersOUT addContacts(
+            @RequestParam(value = "user_id", required = true) Long userId,
+            @RequestParam(value = "contact_id", required = true) Long contactId) {
+        UsersOUT users = new UsersOUT();
+        users.setUsers(zpointService.addContact(userId,contactId));
+        return users;
+    }
+    
+    @RequestMapping("/zeepointgroups/removecontacts")
+    public UsersOUT removeContacts(
+            @RequestParam(value = "user_id", required = true) Long userId,
+            @RequestParam(value = "contact_id", required = true) Long contactId) {
+        UsersOUT users = new UsersOUT();
+        users.setUsers(zpointService.removeContact(userId, contactId));
+        return users;
     }
 }
