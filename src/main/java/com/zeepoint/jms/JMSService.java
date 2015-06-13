@@ -68,6 +68,7 @@ public class JMSService {
             ziPointMessage.setZipuser(user);
             ziPointMessage.setZeepoint(zeePoint);
             ziPointMessage.setDate(message.getTime());
+                ziPointMessage.setMessageType(message.getMessageType());
             messageDao.makePersistent(ziPointMessage);
         for (Room room:zeePoint.getRooms()){
             Zipuser notificationUser=room.getZipuser();
@@ -84,7 +85,7 @@ public class JMSService {
     }
     
         @Transactional
-    @JmsListener(containerFactory = "myJmsContainerFactory", destination = "ios.notification.groupmessage")//@JmsListener(containerFactory = "myJmsContainerFactory", destination = "myQueue")
+    @JmsListener(containerFactory = "myJmsContainerFactory", destination = "ios.notification.privatemessage")//@JmsListener(containerFactory = "myJmsContainerFactory", destination = "myQueue")
     public void processOrderPrivateMessage(ZipointMessage message) {
         //String token = "f4ed6403 76267a64 34d04a99 65bcc762 cdd8418b 0e64705d 102c4709 55a869db";
         try{

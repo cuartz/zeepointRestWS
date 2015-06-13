@@ -50,8 +50,6 @@ public class ZeePointGroupService implements IZeePointGroupService {
 
     public static final Integer USER_STATUS = 1;
     public static final Integer LISTENER_STATUS = 2;
-    public static final Integer GROUP_MESSAGE = 0;
-        public static final Integer PRIVATE_MESSAGE = 1;
     private static final Matcher matcher = Pattern.compile(
             "^\\("
             //Latitude
@@ -156,10 +154,10 @@ public class ZeePointGroupService implements IZeePointGroupService {
         }
         Random ran = new Random();
         int random = ran.nextInt();
-        while (!zeepointDao.findByReference("zp" + random).isEmpty()) {
+        while (!zeepointDao.findByReference("zp-" + random).isEmpty()) {
             random = ran.nextInt();
         }
-        zeepoint.setReferenceId("zp" + random);
+        zeepoint.setReferenceId("zp-" + random);
         zp = zeepointDao.makePersistent(zeepoint);
 
         ZeepointOUT zpOUT = new ZeepointOUT();
@@ -316,6 +314,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zPMessage.setMessageId(zMessage.getId());
             zPMessage.setMessage(zMessage.getMessage());
             zPMessage.setTime(zMessage.getDate());
+            zPMessage.setMessageType(zMessage.getMessageType());
             zPMessage.setUserId(zMessage.getZipuser().getId());
             zPMessage.setFbId(zMessage.getZipuser().getFbId());
             zPMessage.setUserName(zMessage.getZipuser().getName());
@@ -385,6 +384,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zPMessage.setMessageId(zMessage.getId());
             zPMessage.setMessage(zMessage.getMessage());
             zPMessage.setTime(zMessage.getDate());
+            zPMessage.setMessageType(zMessage.getMessageType());
             zPMessage.setUserId(zMessage.getZipuser().getId());
             zPMessage.setFbId(zMessage.getZipuser().getFbId());
             zPMessage.setUserName(zMessage.getZipuser().getName());
@@ -407,6 +407,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zPMessage.setMessageId(pMessage.getId());
             zPMessage.setMessage(pMessage.getMessage());
             zPMessage.setTime(pMessage.getDate());
+            //zPMessage.setMessageType(pMessage.g);
             zPMessage.setUserId(user.getId());
             zPMessage.setFbId(user.getFbId());
             zPMessage.setUserName(user.getName());

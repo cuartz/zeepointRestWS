@@ -23,15 +23,20 @@ public class OutputMessage implements Serializable{
     
     private Integer messageType;
   
+    public static final Integer TEXT_MESSAGE = 0;
+        public static final Integer PHOTO_MESSAGE = 1;
   public OutputMessage() {
     
   }
   
-  public OutputMessage(Long id, String message, String channel, Long userId) {
+  public OutputMessage(Long id, String message, String channel, Long userId, String userName, Long fbId, Integer messageType) {
     this.id = id;
     this.message = message;
     this.channel=channel;
     this.userId=userId;
+    this.userName=userName;
+    this.fbId=fbId;
+    this.messageType=messageType;
   }
 
   public String getMessage() {

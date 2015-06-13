@@ -54,13 +54,13 @@ public class ChatController {
         //jmsTemplate.convertAndSend("iios.notification.groupmessage", message);
         ZipointMessage zMessage=new ZipointMessage(message, new Date());
 //+message.getChannel()
-        if (message.getMessageType()==ZeePointGroupService.PRIVATE_MESSAGE){
-            messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
-            jmsTemplate.convertAndSend("ios.notification.privatemessage", zMessage);
-        }else{
+//        if (message.getMessageType()==ZeePointGroupService.PRIVATE_MESSAGE){
+//            messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
+//            jmsTemplate.convertAndSend("ios.notification.privatemessage", zMessage);
+//        }else{
              messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
             jmsTemplate.convertAndSend("ios.notification.groupmessage", zMessage);
-        }
+       // }
         //return new OutputMessage(message, new Date());
     }
 

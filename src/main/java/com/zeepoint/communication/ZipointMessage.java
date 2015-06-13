@@ -19,7 +19,7 @@ public class ZipointMessage  extends OutputMessage implements Serializable{
     
     public ZipointMessage(OutputMessage original, Date time) {
         //int id, String message, Long channel, Long userId
-        super(original.getId(), original.getMessage(), original.getChannel(), original.getUserId());
+        super(original.getId(), original.getMessage(), original.getChannel(), original.getUserId(), original.getUserName(), original.getFbId(), original.getMessageType());
         this.time = time;
     }
 
