@@ -16,6 +16,8 @@ public class ZeepointJoinedOUT extends BaseOUT{
     private ZeepointOUT zeePointOut;
     
     private List<ZipointMessage> zMessages;
+    
+    private List<UserOUT> users;
 
     /**
      * @return the zeePointsOut
@@ -43,6 +45,20 @@ public class ZeepointJoinedOUT extends BaseOUT{
      */
     public void setzMessages(List<ZipointMessage> zMessages) {
         this.zMessages = zMessages;
+    }
+
+    /**
+     * @return the users
+     */
+    public List<UserOUT> getUsers() {
+        return users;
+    }
+
+    /**
+     * @param users the users to set
+     */
+    public void setUsers(List<UserOUT> users) {
+        this.users = users;
     }
 
 

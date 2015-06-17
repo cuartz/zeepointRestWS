@@ -321,6 +321,9 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zPMessages.add(zPMessage);
         }
         zpJOUT.setzMessages(zPMessages);
+        
+        zpJOUT.setUsers(getUsers(id));
+        
         return zpJOUT;
     }
 

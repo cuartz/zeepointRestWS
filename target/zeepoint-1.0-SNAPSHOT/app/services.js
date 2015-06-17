@@ -26,7 +26,8 @@
                 channel:service.CHANNEL,
                 userId:4,
                 fbId:10202968387529451,
-                userName:"Kevin Bayona"
+                userName:"Kevin Bayona",
+                messageType:"0"
             }));
             messageIds.push(id);
         };
