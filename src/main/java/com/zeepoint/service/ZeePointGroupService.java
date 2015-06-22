@@ -190,10 +190,10 @@ public class ZeePointGroupService implements IZeePointGroupService {
                 Zeepoint zp = room.getZeepoint();
                 Double distance = distance(zp.getLatitud().doubleValue(), zp.getLongitud().doubleValue(), lat.doubleValue(), lon.doubleValue(), 'M');
                 if (Objects.equals(room.getStatus(), USER_STATUS)) {
-                    if (!isInRange(distance)) {
+                    if (!isInRange(distance) &&  !user.equals(zp.getZipuser())) {
                         room.setStatus(LISTENER_STATUS);
                         roomDao.makePersistent(room);
-                        zpOUT.setDistance(101);
+                        //zpOUT.setDistance(distance);
                     }
                 }
                 zpOUT.setId(zp.getId());
@@ -211,6 +211,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
                 zpOUT.setReferenceId(zp.getReferenceId());
                 zpOUT.setUsers(roomDao.countUsers(zp.getId()).intValue());//zp.getRooms().size());
                 zpOUT.setListeners(roomDao.countListeners(zp.getId()).intValue());
+                zpOUT.setOwnerId(zp.getZipuser().getId().toString());
                 zpsOUT.add(zpOUT);
 //                }
             }
@@ -233,6 +234,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
             zpOUT.setReferenceId(zp.getReferenceId());
             zpOUT.setUsers(roomDao.countUsers(zp.getId()).intValue());//zp.getRooms().size());
             zpOUT.setListeners(roomDao.countListeners(zp.getId()).intValue());
+            zpOUT.setOwnerId(zp.getZipuser().getId().toString());
             zpsOUT.add(zpOUT);
 //            }
         }
@@ -241,7 +243,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
     
         @Override
     @Transactional
-    public List<ZeepointOUT> getFavoriteZpoints(Long userId) {
+    public List<ZeepointOUT> getFavoriteZpoints(BigDecimal lat, BigDecimal lon, Long userId) {
         List<ZeepointOUT> zpsOUT = new ArrayList<>();
 
         Zipuser user=userDao.findById(userId, true);
@@ -256,13 +258,15 @@ public class ZeePointGroupService implements IZeePointGroupService {
 //                if (zp.getId().equals(joinedZpoint)) {
 //                    zpOUT.setJoined(true);
 //                }
-            zpOUT.setDistance(zp.getDistance());
+            Double distance = distance(zp.getLatitud().doubleValue(), zp.getLongitud().doubleValue(), lat.doubleValue(), lon.doubleValue(), 'M');
+            zpOUT.setDistance(distance.intValue());
             zpOUT.setLatitud(zp.getLatitud());
             zpOUT.setLongitud(zp.getLongitud());
             zpOUT.setName(zp.getName());
             zpOUT.setReferenceId(zp.getReferenceId());
             zpOUT.setUsers(roomDao.countUsers(zp.getId()).intValue());//zp.getRooms().size());
             zpOUT.setListeners(roomDao.countListeners(zp.getId()).intValue());
+            zpOUT.setOwnerId(zp.getZipuser().getId().toString());
             zpsOUT.add(zpOUT);
 //            }
         }
@@ -282,7 +286,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
             room = new Room();
             room.setZipuser(user);
         }
-        if (isInRange(zpoint, lat, lon) || user==zpoint.getZipuser()) {
+        if (isInRange(zpoint, lat, lon) || user.equals(zpoint.getZipuser())) {
             room.setStatus(USER_STATUS);
         } else {
             room.setStatus(LISTENER_STATUS);
@@ -304,6 +308,7 @@ public class ZeePointGroupService implements IZeePointGroupService {
         zpOUT.setReferenceId(zpoint.getReferenceId());
         zpOUT.setUsers(roomDao.countUsers(zpoint.getId()).intValue());//zp.getRooms().size());
         zpOUT.setListeners(roomDao.countListeners(zpoint.getId()).intValue());
+        zpOUT.setOwnerId(zpoint.getZipuser().getId().toString());
         zpJOUT.setZeePointOut(zpOUT);
 
         List<Message> messages = messageDao.getLastMessages(id);
@@ -325,6 +330,23 @@ public class ZeePointGroupService implements IZeePointGroupService {
         zpJOUT.setUsers(getUsers(id));
         
         return zpJOUT;
+    }
+    
+       @Override
+    @Transactional
+    public Boolean exitZpoint(Long id, Long userId) {
+
+        Zeepoint zpoint = zeepointDao.findById(id, false);
+        Zipuser user = userDao.findById(userId, false);
+        Room room = null;
+        if (!user.getRooms().isEmpty()) {
+            room = user.getRooms().iterator().next();
+            if (room.getZeepoint().equals(zpoint)){
+                roomDao.makeTransient(room);
+            }
+            return true;
+        }
+        return false;
     }
 
     private boolean isInRange(Zeepoint zpoint, BigDecimal lat, BigDecimal lon) {

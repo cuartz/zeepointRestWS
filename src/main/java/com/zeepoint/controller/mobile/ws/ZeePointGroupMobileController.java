@@ -66,12 +66,21 @@ public class ZeePointGroupMobileController extends MobileAppRestController {
             @RequestParam(value = "country", required = true) String country,
             @RequestParam(value = "state", required = true) String state,
             @RequestParam(value = "city", required = true) String city) {
+        ZeepointOUT zp =null;
+    
         try{
-        ZeepointOUT zp = zpointService.createZpoint(lat, lon, name, fb_id, country, state, city);
+            zp = zpointService.createZpoint(lat, lon, name, fb_id, country, state, city);
         return zp;
         }catch(ZipointsBLException zE){
-                return null;
-                }
+                zp=new ZeepointOUT();
+                zp.setErrorCode(1);
+                zp.setErrorMessage("There is already a ZiPoint here");
+        }catch(Exception e){
+                zp=new ZeepointOUT();
+                zp.setErrorCode(501);
+                zp.setErrorMessage("go to www.zipoints.com and report the error, we will start fixing it as soon as posible.");
+        }
+             return zp;   
     }
 
     @Autowired
@@ -83,11 +92,13 @@ public class ZeePointGroupMobileController extends MobileAppRestController {
             @RequestParam(value = "lat", required = true) BigDecimal lat,
             @RequestParam(value = "user_id", required = true) Long userId,
             @RequestParam(value = "from_row", required = true) Integer fromRow) {
-        List<ZeepointOUT> zps = zpointService.getAllZpoints(lat, lon, userId, fromRow, 15);
         ZeepointsOUT zpsOUT = new ZeepointsOUT();
+        try {
+        List<ZeepointOUT> zps=zpointService.getAllZpoints(lat, lon, userId, fromRow, 15);
+        
         zpsOUT.setZeePointsOut(zps);
 
-        try {
+        
             //jmsTemplate.convertAndSend("ios.notification.join", "mensaje");//"mailbox-destination", "mensaje");
 
 //                Push.alert("Hello World!", "keystore.p12", "wasa0901852592C", false, "Your token");
@@ -101,12 +112,15 @@ public class ZeePointGroupMobileController extends MobileAppRestController {
     
         @RequestMapping("/zeepointgroups/getfavoritezpoints")
     public ZeepointsOUT getFavoriteZpoints(
+            @RequestParam(value = "lon", required = true) BigDecimal lon,
+            @RequestParam(value = "lat", required = true) BigDecimal lat,
             @RequestParam(value = "user_id", required = true) Long userId) {
-        List<ZeepointOUT> zps = zpointService.getFavoriteZpoints(userId);
-        ZeepointsOUT zpsOUT = new ZeepointsOUT();
-        zpsOUT.setZeePointsOut(zps);
 
+ZeepointsOUT zpsOUT = new ZeepointsOUT();
         try {
+                    List<ZeepointOUT> zps = zpointService.getFavoriteZpoints(lat, lon, userId);
+        
+        zpsOUT.setZeePointsOut(zps);
             //jmsTemplate.convertAndSend("ios.notification.join", "mensaje");//"mailbox-destination", "mensaje");
 
 //                Push.alert("Hello World!", "keystore.p12", "wasa0901852592C", false, "Your token");
@@ -132,6 +146,13 @@ public class ZeePointGroupMobileController extends MobileAppRestController {
 //        zpsOUT.setZeePointsOut(zps);
         jmsTemplate.convertAndSend("ios.notification.join", new ZipointJoin(id, userId));
         return join;
+    }
+    
+        @RequestMapping("/zeepointgroups/exit")
+    public Boolean exitZpoint(
+            @RequestParam(value = "id", required = true) Long id,
+            @RequestParam(value = "user_id", required = true) Long userId) {
+        return zpointService.exitZpoint(id, userId);
     }
     
     

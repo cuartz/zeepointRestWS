@@ -25,6 +25,8 @@ public interface IZeePointGroupService {
     
     public ZeepointJoinedOUT joinZpoint(Long id, Long userId, BigDecimal lat, BigDecimal lon);
     
+    public Boolean exitZpoint(Long id, Long userId);
+    
     public ZipointMessagesOUT getPreviousMessages(Long id, Long lastMessageId);
     
     public List<UserOUT> getUsers(Long ziPointId);
@@ -37,5 +39,5 @@ public interface IZeePointGroupService {
         
           public List<UserOUT> addContact(Long userId, Long contactId);
           
-              public List<ZeepointOUT> getFavoriteZpoints(Long userId);
+              public List<ZeepointOUT> getFavoriteZpoints(BigDecimal lat, BigDecimal lon, Long userId);
 }

@@ -14,6 +14,7 @@ public class ZeepointOUT extends BaseOUT {
      private long id;
      private String name;
      private String referenceId;
+     private String ownerId;
      private BigDecimal longitud;
      private BigDecimal latitud;
      private Integer distance;
@@ -26,13 +27,13 @@ public class ZeepointOUT extends BaseOUT {
     }
 
 	
-    public ZeepointOUT(long id, String name, String referenceId, BigDecimal longitud, BigDecimal latitud, Integer distance) {
-        this.id = id;
-        this.name = name;
-        this.referenceId = referenceId;
-        this.longitud = longitud;
-        this.latitud = latitud;
-    }
+//    public ZeepointOUT(long id, String name, String referenceId, BigDecimal longitud, BigDecimal latitud, Integer distance) {
+//        this.id = id;
+//        this.name = name;
+//        this.referenceId = referenceId;
+//        this.longitud = longitud;
+//        this.latitud = latitud;
+//    }
 
     
     public long getId() {
@@ -160,6 +161,20 @@ public class ZeepointOUT extends BaseOUT {
      */
     public void setListeners(Integer listeners) {
         this.listeners = listeners;
+    }
+
+    /**
+     * @return the ownerId
+     */
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    /**
+     * @param ownerId the ownerId to set
+     */
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
 

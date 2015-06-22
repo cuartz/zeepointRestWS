@@ -25,7 +25,7 @@ public class MessageDAOImpl extends DAOImpl<Message, Long>
         return getSession().createCriteria(Message.class)
                 //.add(Restrictions.eq("status", ZeePointGroupService.LISTENER_STATUS))
                 .add(Restrictions.eq("zeepoint.id", zeepointId))
-                .setMaxResults(30).addOrder(Order.desc("id")).list();
+                .setMaxResults(20).addOrder(Order.desc("id")).list();
                 //.setProjection(Projections.rowCount()).uniqueResult();  
     }
 
@@ -37,7 +37,7 @@ public class MessageDAOImpl extends DAOImpl<Message, Long>
                 //.add(Restrictions.eq("status", ZeePointGroupService.LISTENER_STATUS))
                 .add(Restrictions.eq("zeepoint.id", zeepointId))
                 .add(Restrictions.lt("id", lastMessageId))
-                .setMaxResults(30).addOrder(Order.desc("id")).list();
+                .setMaxResults(20).addOrder(Order.desc("id")).list();
                 //.setProjection(Projections.rowCount()).uniqueResult();  
     }
     

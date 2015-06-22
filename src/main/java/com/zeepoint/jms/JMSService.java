@@ -74,8 +74,11 @@ public class JMSService {
             Zipuser notificationUser=room.getZipuser();
             //user.setNotifications(user.getNotifications()+1)
             //userDao.makePersistent(user);
-            if (user!=notificationUser){
-                iosNotification.sendNotification(user.getName()+" send a message to the point: "+zeePoint.getName(), 1, notificationUser.getDeviceId());
+            if (notificationUser!=null && !user.equals(notificationUser)){
+                if (notificationUser.getDeviceId()!=null){
+                String token=notificationUser.getDeviceId().replace("<", "").replace(">", "");
+                iosNotification.sendNotification(user.getName()+" says: "+message.getMessage()+" on "+zeePoint.getName(), 1, token);
+                }
             }
         }
         }
