@@ -9,7 +9,7 @@
         service.RECONNECT_TIMEOUT = 30000;
         service.SOCKET_URL = "/chat";
         service.CHAT_TOPIC = "/topic/channels";
-        service.CHAT_BROKER = "/app/chat";
+        service.CHAT_BROKER = "/app/chat/";
         service.CHANNEL = "";
 
         service.receive = function () {
@@ -18,7 +18,7 @@
 
         service.send = function (message) {
             var id = Math.floor(Math.random() * 1000000);
-            socket.stomp.send(service.CHAT_BROKER, {
+            socket.stomp.send(service.CHAT_BROKER+service.CHANNEL, {
                 priority: 9
             }, JSON.stringify({
                 message: message,

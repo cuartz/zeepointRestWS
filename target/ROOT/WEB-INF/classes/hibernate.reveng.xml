@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="zipoints"/>
+  <table-filter match-name="proom"/>
+  <table-filter match-name="room"/>
+  <table-filter match-name="message"/>
+  <table-filter match-name="pmessage"/>
+  <table-filter match-name="user_roles"/>
+  <table-filter match-name="contact"/>
+  <table-filter match-name="state"/>
+  <table-filter match-name="country"/>
+  <table-filter match-name="zeepoint"/>
+  <table-filter match-name="city"/>
+  <table-filter match-name="zipuser"/>
+  <table-filter match-name="persistent_logins"/>
+</hibernate-reverse-engineering>

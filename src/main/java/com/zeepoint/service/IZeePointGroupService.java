@@ -10,6 +10,7 @@ import com.zeepoint.communication.UserOUT;
 import com.zeepoint.communication.ZeepointJoinedOUT;
 import com.zeepoint.communication.ZeepointOUT;
 import com.zeepoint.communication.ZipointMessagesOUT;
+import com.zeepoint.communication.ZipointPrivateMessagesOUT;
 import com.zeepoint.model.Zeepoint;
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,7 +32,7 @@ public interface IZeePointGroupService {
     
     public List<UserOUT> getUsers(Long ziPointId);
     
-    public ZipointMessagesOUT getPreviousPrivateMessages(Long fromId, Long toId, Long lastMessageId);
+    public ZipointPrivateMessagesOUT getPreviousPrivateMessages(Long fromId, Long toId, Long lastMessageId);
     
     public List<UserOUT> getContacts(Long userId);
     

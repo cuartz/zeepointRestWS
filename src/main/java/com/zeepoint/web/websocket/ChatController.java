@@ -6,7 +6,9 @@
 package com.zeepoint.web.websocket;
 
 import com.zeepoint.communication.OutputMessage;
+import com.zeepoint.communication.PrivateOutputMessage;
 import com.zeepoint.communication.ZipointMessage;
+import com.zeepoint.communication.ZipointPrivateMessage;
 import com.zeepoint.service.ZeePointGroupService;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -48,9 +50,9 @@ public class ChatController {
         return "prueba";
     }
 
-    @MessageMapping("/chat")
-    //@SendTo("/topic/channels")
-    public void sendMessage(OutputMessage message) {
+    @MessageMapping("/chat/{channel}")
+    //@SendTo("/topic/channels/{channel}")
+    public void sendMessage(@DestinationVariable String channel, OutputMessage message) {
         //jmsTemplate.convertAndSend("iios.notification.groupmessage", message);
         ZipointMessage zMessage=new ZipointMessage(message, new Date());
 //+message.getChannel()
@@ -58,8 +60,30 @@ public class ChatController {
 //            messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
 //            jmsTemplate.convertAndSend("ios.notification.privatemessage", zMessage);
 //        }else{
-             messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
+             messagingTemplate.convertAndSend("/topic/channels/" + channel, zMessage);
             jmsTemplate.convertAndSend("ios.notification.groupmessage", zMessage);
+            
+            
+           // return zMessage;
+       // }
+        //return new OutputMessage(message, new Date());
+    }
+    
+    @MessageMapping("/chat/private/{userId}")
+    //@SendTo("/topic/channels/{channel}")
+    public void sendPrivateMessage(@DestinationVariable Long userId, PrivateOutputMessage message) {
+        //jmsTemplate.convertAndSend("iios.notification.groupmessage", message);
+        ZipointPrivateMessage zMessage=new ZipointPrivateMessage(message, new Date(), userId);
+//+message.getChannel()
+//        if (message.getMessageType()==ZeePointGroupService.PRIVATE_MESSAGE){
+//            messagingTemplate.convertAndSend("/topic/channels/" + message.getChannel(), zMessage);
+//            jmsTemplate.convertAndSend("ios.notification.privatemessage", zMessage);
+//        }else{
+             messagingTemplate.convertAndSend("/topic/private/" + userId, zMessage);
+            jmsTemplate.convertAndSend("ios.notification.privatemessage", zMessage);
+            
+            
+           // return zMessage;
        // }
         //return new OutputMessage(message, new Date());
     }

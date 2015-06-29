@@ -21,6 +21,8 @@ import com.zeepoint.communication.UserOUT;
 import com.zeepoint.communication.ZeepointJoinedOUT;
 import com.zeepoint.communication.ZeepointOUT;
 import com.zeepoint.communication.ZipointMessagesOUT;
+import com.zeepoint.communication.ZipointPrivateMessage;
+import com.zeepoint.communication.ZipointPrivateMessagesOUT;
 import com.zeepoint.model.City;
 import com.zeepoint.model.Contact;
 import com.zeepoint.model.Country;
@@ -421,21 +423,23 @@ public class ZeePointGroupService implements IZeePointGroupService {
     
         @Override
     @Transactional
-    public ZipointMessagesOUT getPreviousPrivateMessages(Long fromId, Long toId, Long lastMessageId) {
-        ZipointMessagesOUT zpMessagesOut = new ZipointMessagesOUT();
-        Zipuser user = userDao.findById(toId, false);
+    public ZipointPrivateMessagesOUT getPreviousPrivateMessages(Long fromId, Long toId, Long lastMessageId) {
+        ZipointPrivateMessagesOUT zpMessagesOut = new ZipointPrivateMessagesOUT();
+        Zipuser fromUser = userDao.findById(fromId, false);
+        Zipuser toUser = userDao.findById(toId, false);
         List<Pmessage> pMessages = pMessageDao.getPreviousMessages(fromId, toId, lastMessageId);
-        List<ZipointMessage> zPMessages = new ArrayList<>();
+        List<ZipointPrivateMessage> zPMessages = new ArrayList<>();
         for (Pmessage pMessage : pMessages) {
-            ZipointMessage zPMessage = new ZipointMessage();
+            ZipointPrivateMessage zPMessage = new ZipointPrivateMessage();
             //zPMessage.setChannel(zpoint.getReferenceId());
             zPMessage.setMessageId(pMessage.getId());
             zPMessage.setMessage(pMessage.getMessage());
             zPMessage.setTime(pMessage.getDate());
-            //zPMessage.setMessageType(pMessage.g);
-            zPMessage.setUserId(user.getId());
-            zPMessage.setFbId(user.getFbId());
-            zPMessage.setUserName(user.getName());
+            zPMessage.setMessageType(pMessage.getMessageType());
+            zPMessage.setUserId(fromUser.getId());
+            zPMessage.setFbId(fromUser.getFbId());
+            zPMessage.setUserName(fromUser.getName());
+            zPMessage.setToUserId(toUser.getId());
             zPMessages.add(zPMessage);
         }
         zpMessagesOut.setzMessages(zPMessages);
