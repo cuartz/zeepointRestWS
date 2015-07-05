@@ -42,18 +42,18 @@ public class PmessageDAOImpl extends DAOImpl<Pmessage, Long>
     @SuppressWarnings("unchecked")
     @Override
     public List<Pmessage> getPreviousMessages(Long fromUserId, Long toUserId, Long lastMessageId) {
-        Long user1;
-        Long user2;
-        if (fromUserId > toUserId) {
-            user1 = toUserId;
-            user2 = fromUserId;
-        } else {
-            user2 = toUserId;
-            user1 = fromUserId;
-        }
+//        Long user1;
+//        Long user2;
+//        if (fromUserId > toUserId) {
+//            user1 = toUserId;
+//            user2 = fromUserId;
+//        } else {
+//            user2 = toUserId;
+//            user1 = fromUserId;
+//        }
         return getSession().createCriteria(Message.class)
                 //.add(Restrictions.eq("status", ZeePointGroupService.LISTENER_STATUS))
-                .add(Restrictions.or(Restrictions.eq("user1", user1), Restrictions.eq("user2", user2)))
+                .add(Restrictions.and(Restrictions.eq("fromUserId", fromUserId), Restrictions.eq("toUserId", toUserId)))
                 .add(Restrictions.lt("id", lastMessageId))
                 .setMaxResults(30).addOrder(Order.desc("id")).list();
         //.setProjection(Projections.rowCount()).uniqueResult();  

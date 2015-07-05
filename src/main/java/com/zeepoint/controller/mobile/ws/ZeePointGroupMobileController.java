@@ -12,6 +12,7 @@ import com.zeepoint.communication.ZeepointJoinedOUT;
 import com.zeepoint.communication.ZeepointOUT;
 import com.zeepoint.communication.ZeepointsOUT;
 import com.zeepoint.communication.ZipointMessagesOUT;
+import com.zeepoint.communication.ZipointPrivateMessagesOUT;
 import com.zeepoint.model.Zeepoint;
 import com.zeepoint.service.AsyncService;
 import com.zeepoint.service.IZeePointGroupService;
@@ -180,11 +181,11 @@ ZeepointsOUT zpsOUT = new ZeepointsOUT();
     }
     
                 @RequestMapping("/zeepointgroups/getpmessages")
-    public ZipointMessagesOUT getPmessages(
+    public ZipointPrivateMessagesOUT getPmessages(
             @RequestParam(value = "fromId", required = true) Long fromId,
             @RequestParam(value = "tpId", required = true) Long toId,
             @RequestParam(value = "last_message", required = true) Long messageId) {
-        ZipointMessagesOUT previousMessages = zpointService.getPreviousPrivateMessages(fromId, toId, messageId);
+        ZipointPrivateMessagesOUT previousMessages = zpointService.getPreviousPrivateMessages(fromId, toId, messageId);
 //        List<ZeepointOUT> zps = zpointService.getAllZpoints(lat, lon, userId, 1,30);
 //        ZeepointsOUT zpsOUT = new ZeepointsOUT();
 //        zpsOUT.setZeePointsOut(zps);
